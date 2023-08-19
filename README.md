@@ -1,0 +1,1 @@
+# cloudfront-log-partition
