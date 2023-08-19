@@ -1,0 +1,19 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "cloudfront-log-partition"
+
+[default.validate.parameters]
+lint = true
+
+[default.deploy.parameters]
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+s3_prefix = "cloudfront-log-partition"
+
+[default.package.parameters]
+s3_prefix = "cloudfront-log-partition"
+output_template_file = "packaged.yaml"
+
+[default.publish.parameters]
+template = "packaged.yaml"

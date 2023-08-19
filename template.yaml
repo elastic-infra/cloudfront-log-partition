@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  SourceBucket:
+    Description: The bucket to output CloudFront logs.
+    Type: String
+  DestinationBucket:
+    Description: The bucket to output partitioned logs. Can be the same as SourceBucket.
+    Type: String
+  DestinationKeyPrefix:
+    Description: The prefix for the log to be partitioned.
+    Default: ''
+    Type: String
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: This lambda function partitions CloudFront logs. Supports calls via S3 Event Notifications or S3 Batch Operations.
+      Handler: src/app.handler
+      Runtime: nodejs18.x
+      Timeout: 60
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:DeleteObject
+              Resource: !Sub arn:${AWS::Partition}:s3:::${SourceBucket}/*
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource: !Sub arn:${AWS::Partition}:s3:::${DestinationBucket}/${DestinationKeyPrefix}*
+      Environment:
+        Variables:
+          DESTINATION_BUCKET: !Ref DestinationBucket
+          DESTINATION_KEY_PREFIX: !Ref DestinationKeyPrefix
+  FunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt Function.Arn
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:s3:::${SourceBucket}/*
+
+Outputs:
+  FunctionArn:
+    Description: CloudFront log partition Lambda Function ARN
+    Value: !GetAtt Function.Arn
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: cloudfront-log-partition
+    Description: This application provide lambda function which partitions CloudFront logs. Supports calls via S3 Event Notifications or S3 Batch Operations.
+    Author: elastic-infra
+    SpdxLicenseId: MIT
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels:
+      - lambda
+      - nodejs
+      - cloudfront
+    HomePageUrl: https://github.com/elastic-infra/cloudfront-log-partition
+    SemanticVersion: 1.0.0
+    SourceCodeUrl: https://github.com/elastic-infra/cloudfront-log-partition
