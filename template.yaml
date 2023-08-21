@@ -62,5 +62,5 @@ Metadata:
       - nodejs
       - cloudfront
     HomePageUrl: https://github.com/elastic-infra/cloudfront-log-partition
-    SemanticVersion: 1.0.0
+    SemanticVersion: 1.1.0
     SourceCodeUrl: https://github.com/elastic-infra/cloudfront-log-partition

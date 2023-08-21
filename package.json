@@ -1,6 +1,6 @@
 {
   "name": "cloudfront-log-partition",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This lambda function partitions CloudFront logs. Supports calls via S3 Event Notifications or S3 Batch Operations.",
   "main": "src/app.js",
   "repository": "https://github.com/elastic-infra/cloudfront-log-partition",
