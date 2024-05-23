@@ -6,6 +6,9 @@ stack_name = "cloudfront-log-partition"
 [default.validate.parameters]
 lint = true
 
+[default.build.parameters]
+use_container = true
+
 [default.deploy.parameters]
 confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
