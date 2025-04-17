@@ -19,7 +19,7 @@ Resources:
     Properties:
       Description: This lambda function partitions CloudFront logs. Supports calls via S3 Event Notifications or S3 Batch Operations.
       Handler: src/app.handler
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Timeout: 60
       Policies:
         - Statement:
